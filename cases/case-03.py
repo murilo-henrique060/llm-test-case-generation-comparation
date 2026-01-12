@@ -5,11 +5,11 @@ Sistema de controle de assinaturas
 
 ## Regras de Negócio
 
-- Uma assinatura pode estar Ativa, Suspensa ou Cancelada;
-- Assinaturas canceladas não podem ser reativadas;
-- Suspensão ocorre automaticamente após 3 falhas de pagamento consecutivas;
-- Pagamento bem-sucedido zera o contador de falhas;
-- Datas de cobrança não podem ser retroativas.
+- RN01: Uma assinatura pode estar Ativa, Suspensa ou Cancelada;
+- RN02: Assinaturas canceladas não podem ser reativadas;
+- RN03: Suspensão ocorre automaticamente após 3 falhas de pagamento consecutivas;
+- RN04: Pagamento bem-sucedido zera o contador de falhas;
+- RN05: Datas de cobrança não podem ser retroativas.
 
 ## Requisitos Funcionais
 
@@ -21,24 +21,20 @@ Sistema de controle de assinaturas
 
 ## Diagrama de Classes UML
 
-Pagamento
-----------------
+[Class] Pagamento
 + sucesso: bool
-----------------
 
-Assinatura
-----------------
+[Class] Assinatura
 + status: "ATIVA" | "SUSPENSA" | "CANCELADA"
 + falhas_pagamento: int
-----------------
-+ registrar_pagamento(pagamento: Paramento) -> Decimal
++ registrar_pagamento(pagamento: Paramento): Decimal
 
 ## Erros Mapeados
 
-- Aceita quantidade 0 ou negativa de itens;
-- Permite pedido sem itens válidos;
-- Ignora quantidade de itens no cálculo do total;
-- Pode aplicar o desconto várias vezes.
+- E01: Contagem incorreta de falhas;
+- E02: Pagamento retroativo;
+- E03: Não resetar contador;
+- E04: Transições inválidas de estado.
 """
 
 class Pagamento:

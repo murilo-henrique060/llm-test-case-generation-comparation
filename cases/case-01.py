@@ -5,10 +5,10 @@ Um sistema para permitir a criação e armazenamento de Usuários
 
 ## Regras de Negócio
 
-- Todos os usuários devem possuir nome, email e senha;
-- O email deve conter o caractere @;
-- A senha deve ter, no mínimo, 6 caracteres;
-- Não é permitido cadastrar dois usuário com o mesmo email.
+- RN01: Todos os usuários devem possuir nome, email e senha;
+- RN02: O email deve conter o caractere @;
+- RN03: A senha deve ter, no mínimo, 6 caracteres;
+- RN04: Não é permitido cadastrar dois usuário com o mesmo email.
 
 ## Requisitos Funcionais
 
@@ -19,24 +19,20 @@ Um sistema para permitir a criação e armazenamento de Usuários
 
 ## Diagrama de classes UML
 
-Usuario
-----------------
+[Class] Usuario
 + nome: str
 + email: str
 - senha: str
-----------------
 
-UsuarioService
-----------------
-----------------
+[Class] UsuarioService
 + cadastrar(nome: str, email: str, senha: str) -> Usuario
 
 ## Erros Mapeados
 
-- Não valida nome vazio;
-- Valida email apenas como string não vazia;
-- Não valida tamanho mínimo da senha;
-- Não verifica email duplicado.
+- E01: Não valida nome vazio;
+- E02: Valida email apenas como string não vazia;
+- E03: Não valida tamanho mínimo da senha;
+- E04: Não verifica email duplicado.
 """
 
 from typing import List

@@ -5,11 +5,12 @@ Sistema para realizar pedidos em um E-commerce
 
 ## Regras de Negócio
 
-- Um pedido deve conter, ao menos, um item;
-- Cada item possui a quantidade mínima de 1;
-- O valor total do pedido é a soma dos itens;
-- Pedidos acima de R$ 200 recebem 10% de desconto;
-- O desconto não pode ser aplicado duas vezes.
+- RN01: Um pedido deve conter, ao menos, um item;
+- RN02: Cada item possui a quantidade mínima de 1;
+- RN03: Todos os itens devem ter preço positivo;
+- RN04: O valor total do pedido é a soma dos itens;
+- RN05: Pedidos acima de R$ 200 recebem 10% de desconto;
+- RN06: O desconto não pode ser aplicado duas vezes.
 
 ## Requisitos Funcionais
 
@@ -21,25 +22,21 @@ Sistema para realizar pedidos em um E-commerce
 
 ## Diagrama de Classes UML
 
-Item
----------------
+[Class] Item
 + nome: str
 + preco: Decimal
 + quantidade: int
-----------------
 
-Pedido
-----------------
-----------------
-+ adicionar_item(item: Item) -> None
-+ calcular_total() -> Decimal
+[Class] Pedido
++ adicionar_item(item: Item): None
++ calcular_total(): Decimal
 
 ## Erros Mapeados
 
-- Aceita quantidade 0 ou negativa de itens;
-- Permite pedido sem itens válidos;
-- Ignora quantidade de itens no cálculo do total;
-- Pode aplicar o desconto várias vezes.
+- E01: Aceita quantidade 0 ou negativa de itens;
+- E02: Permite pedido sem itens válidos;
+- E03: Ignora quantidade de itens no cálculo do total;
+- E04: Pode aplicar o desconto várias vezes.
 """
 
 from typing import List
@@ -48,7 +45,7 @@ from decimal import Decimal
 class Item:
     def __init__(self, nome: str, preco: Decimal, quantidade: int):
         self.nome: str = nome
-        self.preco: Decimal = preco
+        self.preco: Decimal = preco # Aceita 0 ou negativo
         self.quantidade: int = quantidade  # Aceita 0 ou negativo
 
 
