@@ -1,5 +1,5 @@
 """
-# Caso de Teste 03 - Sistema de Pedidos
+# Caso de Teste 02 - Sistema de Pedidos
 
 Sistema para realizar pedidos em um E-commerce
 
@@ -39,32 +39,33 @@ Sistema para realizar pedidos em um E-commerce
 - E04: Pode aplicar o desconto várias vezes.
 """
 
-from typing import List
 from decimal import Decimal
+from typing import List
+
 
 class Item:
-    def __init__(self, nome: str, preco: Decimal, quantidade: int):
-        self.nome: str = nome
-        self.preco: Decimal = preco # Aceita 0 ou negativo
-        self.quantidade: int = quantidade  # Aceita 0 ou negativo
+    def __init__(self, name: str, price: Decimal, quantity: int):
+        self.name: str = name
+        self.price: Decimal = price  # Aceita 0 ou negativo
+        self.quantity: int = quantity  # Aceita 0 ou negativo
 
 
-class Pedido:
+class Order:
     def __init__(self):
-        self.itens: List[Item] = []
-        self.valor_total: Decimal = Decimal(0)
+        self.items: List[Item] = []
+        self.total_value: Decimal = Decimal(0)
 
-    def adicionar_item(self, item):
-        self.itens.append(item)  # Permite pedido sem itens válidos
+    def add_item(self, item):
+        self.items.append(item)  # Permite pedido sem itens válidos
 
-    def calcular_total(self):
+    def calculate_total(self):
         total = Decimal(0)
-        for item in self.itens:
-            total += item.preco  # Ignora quantidade
+        for item in self.items:
+            total += item.price  # Ignora quantidade
 
         # Pode aplicar desconto várias vezes
         if total >= 200:
             total *= Decimal('0.9')
 
-        self.valor_total = total
+        self.total_value = total
         return total

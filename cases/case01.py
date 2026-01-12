@@ -35,27 +35,30 @@ Um sistema para permitir a criação e armazenamento de Usuários
 - E04: Não verifica email duplicado.
 """
 
+
 from typing import List
 
-class Usuario:
-    def __init__(self, nome: str, email: str, senha:str):
-        self.nome = nome
+
+class User:
+    def __init__(self, name: str, email: str, password: str):
+        self.name = name
         self.email = email
-        self.senha = senha
+        self.password = password
 
-class UsuarioService:
+
+class UserService:
     def __init__(self):
-        self._usuarios: List[Usuario] = []
+        self._users: List[User] = []
 
-    def cadastrar(self, nome: str, email: str, senha: str) -> Usuario:
+    def register(self, name: str, email: str, password: str) -> User:
         # Não valida nome vazio
 
-        if not email: # Valida email apenas como string como não vazia
+        if not email:  # Valida email apenas como string como não vazia
             raise "Erro: email obrigatório"
 
         # Não valida tamanho mínimo da senha
 
-        usuario = Usuario(nome, email, senha)
-        self._usuarios.append(usuario) # Não verifica email duplicado
+        user = User(name, email, password)
+        self._users.append(user)  # Não verifica email duplicado
 
-        return usuario
+        return user
