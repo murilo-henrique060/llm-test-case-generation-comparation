@@ -3,7 +3,7 @@ import pytest
 
 # The system under test is expected to provide Item and Order according to the UML.
 # Tests assume they are importable from order_system module.
-from order_system import Item, Order
+from cases.case02 import Item, Order
 
 
 # BR01 – An order must contain at least one item

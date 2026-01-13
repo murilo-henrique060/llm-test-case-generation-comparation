@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from order_system import Item, Order
+from cases.case02 import Item, Order
 
 # BR01 – An order must contain at least one item
 def test_br01_order_with_one_item_is_allowed():
