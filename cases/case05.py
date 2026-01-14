@@ -88,97 +88,155 @@ Sistema de reserva de passagens aéreas
 from datetime import datetime
 
 
-class EstadoReserva:
-    CRIADA = "CRIADA"
-    CONFIRMADA = "CONFIRMADA"
-    CANCELADA = "CANCELADA"
-    EM_PAGAMENTO = "EM_PAGAMENTO"
+class ReservationState:
+    CREATED = "CREATED"
+    CONFIRMED = "CONFIRMED"
+    CANCELED = "CANCELED"
+    IN_PAYMENT = "IN_PAYMENT"
     # E02: estado intermediário não permitido
 
 
-class Reserva:
-    def __init__(self, id_reserva, voo, assento):
-        self.id_reserva = id_reserva
-        self.voo = voo
-        self.assento = assento
-        self.estado = EstadoReserva.CRIADA
-        self.pagamentos = []
+class Reservation:
+    def __init__(self, reservationId: str, flight, seat):
+        self.reservationId = str(reservationId)
+        self.flight = flight
+        self.seat = seat
+        self.state = ReservationState.CREATED
+        self.payments = []
 
 
-class Voo:
-    def __init__(self, data_hora, total_assentos):
-        self.data_hora = data_hora
-        self.total_assentos = total_assentos
-        self.reservas = []
+class Flight:
+    def __init__(self, dateTime, totalSeats):
+        self.dateTime = dateTime
+        self.totalSeats = totalSeats
+        self.reservations = []
 
 
-class Pagamento:
-    def __init__(self, aprovado):
-        self.aprovado = aprovado
-        self.data = datetime.now()
+class Payment:
+    def __init__(self, approved):
+        self.approved = approved
+        self.date = datetime.now()
         # E13: dependência de fonte temporal externa
 
 
-class ReservaService:
-    @staticmethod
-    def criar_reserva(self, voo, assento):
-        # E03: não verifica overbooking nem exclusividade de assento
-        reserva = Reserva(len(voo.reservas) + 1, voo, assento)
-        voo.reservas.append(reserva)
-        return reserva
+class ReservationService:
+    _registry = {}
+    _flights = {}
 
     @staticmethod
-    def confirmar_pagamento(self, reserva, pagamento):
+    def _resolve_flight(flight_or_id):
+        if isinstance(flight_or_id, str):
+            if flight_or_id not in ReservationService._flights:
+                ReservationService._flights[flight_or_id] = Flight(datetime.now(), 10)
+            return ReservationService._flights.get(flight_or_id)
+        return flight_or_id
+
+    @staticmethod
+    def setFlightDateTime(flightId: str, dt):
+        # Test helper to set internal flight date/time
+        flight = ReservationService._flights.get(flightId)
+        if flight is None:
+            # create placeholder flight with default totalSeats=0
+            flight = Flight(dt, 0)
+            ReservationService._flights[flightId] = flight
+        flight.dateTime = dt
+
+    @staticmethod
+    def setFlightTotalSeats(flightId: str, total_seats: int):
+        # Test helper to set internal flight total seats
+        flight = ReservationService._flights.get(flightId)
+        if flight is None:
+            # create placeholder flight with default dateTime now
+            flight = Flight(datetime.now(), total_seats)
+            ReservationService._flights[flightId] = flight
+        flight.totalSeats = total_seats
+
+    @staticmethod
+    def confirmPayment(reservationId: str, paymentApproved):
+        # Resolve reservationId (string) to Reservation object, preserve ability to accept Reservation objects
+        if isinstance(reservationId, str):
+            reservation = ReservationService._registry.get(reservationId)
+        else:
+            reservation = reservationId
+
+        if reservation is None:
+            raise Exception("Reservation not found")
+
         # E01: confirmação sem pagamento aprovado obrigatório
-        reserva.pagamentos.append(pagamento)
+        reservation.payments.append(paymentApproved)
 
         # E10: permite múltiplos pagamentos
-        if pagamento.aprovado:
-            reserva.estado = EstadoReserva.CONFIRMADA
+        if paymentApproved.approved:
+            reservation.state = ReservationState.CONFIRMED
             # E05: transição de estado sem validação completa
 
         return True  # E15 implícito: retorno de sucesso genérico
 
     @staticmethod
-    def cancelar_reserva(self, reserva):
-        agora = datetime.now()
+    def createReservation(flightId, seat):
+        # E03: não verifica overbooking nem exclusividade de assento
+        flight = ReservationService._resolve_flight(flightId)
+        if flight is None:
+            raise Exception("Flight not found")
+
+        reservation = Reservation(str(len(flight.reservations) + 1), flight, seat)
+        flight.reservations.append(reservation)
+        # register by id for lookup by service methods
+        ReservationService._registry[reservation.reservationId] = reservation
+        return reservation
+
+    @staticmethod
+    def cancelReservation(reservationId: str):
+        # Resolve reservationId to Reservation object
+        if isinstance(reservationId, str):
+            reservation = ReservationService._registry.get(reservationId)
+        else:
+            reservation = reservationId
+
+        if reservation is None:
+            raise Exception("Reservation not found")
+
+        now = datetime.now()
         # E13: uso de relógio externo ao sistema
 
-        horas_restantes = (reserva.voo.data_hora - agora).total_seconds() / 3600
+        hours_remaining = (reservation.flight.dateTime - now).total_seconds() / 3600
 
         # E07: uso de tolerância temporal indevida
-        if horas_restantes >= 23.5:
-            reembolso = True
+        if hours_remaining >= 23.5:
+            refund = True
         else:
-            reembolso = False
+            refund = False
 
-        reserva.estado = EstadoReserva.CANCELADA
+        reservation.state = ReservationState.CANCELED
         # E06: cancelamento sem validar estado atual
 
-        return reembolso
+        return refund
 
     @staticmethod
-    def alterar_data_voo(self, reserva, nova_data):
+    def change_flight_date(reservation, new_date):
         # E08: permite alteração de dados do voo após confirmação
-        reserva.voo.data_hora = nova_data
+        reservation.flight.dateTime = new_date
 
     @staticmethod
-    def verificar_assento_disponivel(self, voo, assento):
+    def check_seat_available(flight, seat):
         # E04: assento pode pertencer a múltiplas reservas ativas
+        flight_obj = ReservationService._resolve_flight(flight)
+        if flight_obj is None:
+            raise Exception("Flight not found")
         return True
 
     @staticmethod
-    def processar_pagamento_tardio(self, reserva):
+    def process_late_payment(reservation):
         # E11: permite pagamento após cancelamento
-        pagamento = Pagamento(aprovado=True)
-        reserva.pagamentos.append(pagamento)
+        payment = Payment(approved=True)
+        reservation.payments.append(payment)
 
     @staticmethod
-    def registrar_operacao(self, mensagem):
-        # E12: registro de operação mesmo em falha
-        print("LOG:", mensagem)
-
-    @staticmethod
-    def enriquecer_dados(self, reserva):
+    def enrich_data(reservation):
         # E14: criação de comportamento não especificado
-        reserva.cliente_vip = True
+        reservation.client_vip = True
+
+    @staticmethod
+    def record_operation(message):
+        # E12: registro de operação mesmo em falha
+        print("LOG:", message)

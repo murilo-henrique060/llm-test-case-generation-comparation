@@ -3,7 +3,7 @@ from decimal import Decimal
 
 # Assumes the system under test provides CreditService with the specified interface.
 # Do not implement CreditService here; tests call it as specified.
-from credit_service import CreditService
+from cases.case04 import CreditService
 
 
 # BR01 – Credit may only be approved if Score ≥ 700, Income ≥ R$ 5,000, Age ≥ 21

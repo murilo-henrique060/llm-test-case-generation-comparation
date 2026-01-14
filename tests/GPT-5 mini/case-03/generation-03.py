@@ -12,7 +12,7 @@ from datetime import date
 def test_br01_subscription_status_is_one_of_allowed_states():
     # BR01
     # This test asserts that a Subscription instance's `status` is one of the allowed exact strings.
-    from subscription import Subscription
+    from cases.case03 import Subscription
 
     sub = Subscription()
     assert sub.status in ("ACTIVE", "SUSPENDED", "CANCELED")
@@ -23,7 +23,7 @@ def test_br02_canceled_subscription_recording_successful_payment_raises_exceptio
     # BR02
     # Attempting to record a successful payment on a CANCELED subscription must not reactivate it;
     # the system MUST raise an exception to prevent reactivation.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
     sub.status = "CANCELED"
@@ -39,7 +39,7 @@ def test_br02_canceled_subscription_recording_successful_payment_raises_exceptio
 def test_br03_subscription_automatically_suspends_after_exactly_three_consecutive_failures():
     # BR03
     # Three consecutive failed payments must result in status "SUSPENDED" and payment_failures == 3.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
     assert sub.payment_failures == 0
@@ -56,7 +56,7 @@ def test_br03_subscription_automatically_suspends_after_exactly_three_consecutiv
 def test_br04_successful_payment_resets_consecutive_failure_counter_to_zero():
     # BR04
     # After one or more failures, a successful payment must set payment_failures to exactly 0.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
     from decimal import Decimal
 
     sub = Subscription()
@@ -80,7 +80,7 @@ def test_br05_reject_payment_with_billing_date_before_last_billing_date():
     # BR05
     # The system must prevent retroactive billing dates. If a Payment carries a billing_date earlier than
     # subscription.last_billing_date the system must raise an exception.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
     # Set a last_billing_date explicitly (attribute required by BR05)
@@ -101,7 +101,7 @@ def test_br05_reject_payment_with_billing_date_before_last_billing_date():
 def test_fr01_record_payment_returns_decimal_for_successful_payment():
     # FR01
     # record_payment must return a Decimal when a payment is successfully recorded.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
     from decimal import Decimal
 
     sub = Subscription()
@@ -114,7 +114,7 @@ def test_fr02_failed_payment_increments_failure_and_keeps_status_until_threshold
     # FR02
     # A failed payment must update the subscription's failure counter by exactly +1 and must not
     # change the status before the suspension threshold is reached.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
     initial_status = sub.status
@@ -129,7 +129,7 @@ def test_fr02_failed_payment_increments_failure_and_keeps_status_until_threshold
 def test_fr03_consecutive_failures_increment_counter_precisely():
     # FR03
     # Each failed payment must increment payment_failures by exactly one (deterministic).
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
     assert sub.payment_failures == 0
@@ -148,7 +148,7 @@ def test_fr04_prevent_reactivation_of_canceled_subscription_via_payment_attempt_
     # FR04
     # The system must prevent invalid state transitions; attempting to transition from CANCELED to ACTIVE
     # by recording a successful payment must raise an exception.
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
     sub.status = "CANCELED"
@@ -164,7 +164,7 @@ def test_fr04_prevent_reactivation_of_canceled_subscription_via_payment_attempt_
 def test_fr05_recording_failed_payment_raises_exception():
     # FR05
     # Recording a failed payment must raise an exception (validation failure).
-    from subscription import Subscription, Payment
+    from cases.case03 import Subscription, Payment
 
     sub = Subscription()
 

@@ -11,7 +11,7 @@ from datetime import date
 # - Subscription.payment_failures is an int
 # These tests exercise behaviors described in the specification only.
 
-from subscription import Subscription, Payment
+from cases.case03 import Subscription, Payment
 
 
 # BR01 – A subscription may be in only one of the following states: ACTIVE, SUSPENDED, or CANCELED

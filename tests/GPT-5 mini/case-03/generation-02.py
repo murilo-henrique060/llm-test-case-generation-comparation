@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 # The system under test is expected to provide Subscription and Payment classes
 # with the interfaces described in the specification.
-from subscription import Subscription, Payment
+from cases.case03 import Subscription, Payment
 
 
 # BR01 – A subscription may be in only one of the following states: ACTIVE, SUSPENDED, or CANCELED

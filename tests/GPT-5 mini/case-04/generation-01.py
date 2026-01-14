@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from credit_service import CreditService
+from cases.case04 import CreditService
 
 # BR01 – Credit may only be approved if Score ≥ 700, Income ≥ R$ 5,000, Age ≥ 21
 def test_br01_approve_when_all_criteria_met():

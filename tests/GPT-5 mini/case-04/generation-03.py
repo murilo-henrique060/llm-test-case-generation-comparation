@@ -1,6 +1,6 @@
 import pytest
 
-from credit_service import CreditService
+from cases.case04 import CreditService
 
 # BR01 – Credit may only be approved if Score ≥ 700, Income ≥ 5000, Age ≥ 21
 def test_br01_credit_approved_at_exact_thresholds():

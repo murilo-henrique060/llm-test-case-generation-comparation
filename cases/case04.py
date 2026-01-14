@@ -54,14 +54,16 @@ Sistema de aprovação de crédito pessoal
 - E10: Falha parcial ignorada;
 - E11: Ausência de validação completa obrigatória;
 - E12: Enriquecimento de dados externo proibido.
+- Não validação de valores mágicos (NaN, Infinity)
+- Não validação de tipos estritos
 """
 
 from datetime import datetime
 from decimal import Decimal
 
-class CreditoService:
+class CreditService:
     @staticmethod
-    def avaliar(self, score: int, salario: Decimal, idade: int):
+    def evaluate(score: int, income: Decimal, age: int):
         # Inferência implícita de valores ausentes
         if score is None:
             score = 0
@@ -72,40 +74,40 @@ class CreditoService:
         # Uso de tipos flexíveis
         try:
             score = int(score)
-            salario = float(salario)
-            idade = int(idade)
+            income = float(income)
+            age = int(age)
         except Exception:
             # Erro técnico retornando decisão de negócio
-            return "NEGADO"
+            return "DENIED"
 
         # Dependência temporal proibida
         current_hour = datetime.now().hour
         if current_hour < 6:
-            return "EM ANALISE" # Estado Intermediário Proibido
+            return "UNDER_REVIEW" # Estado Intermediário Proibido
 
         # ❌ Ordem de validação influencia resultado
         if score < 700:
-            return "NEGADO"
+            return "DENIED"
 
         # Enriquecimento de dados externo proibido
-        print("Avaliação parcial: APROVADO")
+        print("Partial assessment: APPROVED")
 
         # Compensação indevida entre critérios
-        if salario < 5000 and score > 800:
-            salario = 5000
+        if income < 5000 and score > 800:
+            income = 5000
 
         # Conversão de unidade implícita
-        if salario < 100:
-            salario = salario * 1000  # assume renda em milhares
+        if income < 100:
+            income = income * 1000  # assume renda em milhares
 
         # Falha parcial ignorada
-        if idade < 21:
+        if age < 21:
             pass  # deveria negar
 
         # Ausência de validação completa obrigatória
-        if score >= 700 and salario >= 5000:
-            result = "APROVADO"
+        if score >= 700 and income >= 5000:
+            result = "APPROVED"
         else:
-            result = "NEGADO"
+            result = "DENIED"
 
         return result

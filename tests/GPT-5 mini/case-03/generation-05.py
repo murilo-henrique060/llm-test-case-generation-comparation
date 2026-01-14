@@ -12,7 +12,7 @@ from datetime import date
 # implement or assume behaviors not explicitly stated.
 
 try:
-    from subscription_system import Subscription, Payment  # presumed system module per specification
+    from cases.case03 import Subscription, Payment  # presumed system module per specification
 except Exception:
     # Provide minimal stand-ins so that static analysis of tests (but not execution of system behavior) can succeed.
     # These stand-ins are for test file completeness only and will be ignored when running against the real system.

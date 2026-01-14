@@ -34,33 +34,36 @@ Sistema de controle de assinaturas
 - E01: Contagem incorreta de falhas;
 - E02: Pagamento retroativo;
 - E03: Não resetar contador;
-- E04: Transições inválidas de estado.
+- E04: Transições inválidas de estado;
+- E05: Subscription.record_payment não retorna Decimal;
+- E06: Exceção não lançada em falha de pagamento;
+- E07: Suspensão ocorre antes de 3 falhas;
 """
 
-class Pagamento:
-    def __init__(self, sucesso: bool):
-        self.sucesso: bool = sucesso
+class Payment:
+    def __init__(self, success: bool):
+        self.success: bool = success
 
-class Assinatura:
-    def __init__(self):
-        self.status: str = "ATIVA"
-        self.falhas_pagamento: int = 0
+class Subscription:
+    def __init__(self, status: str = "ACTIVE", payment_failures: int = 0):
+        self.status: str = status
+        self.payment_failures: int = payment_failures
 
-    def registrar_pagamento(self, pagamento: Pagamento) -> None:
+    def record_payment(self, payment: Payment) -> None:
         # Aceita pagamento retroativo
-        if pagamento.sucesso:
+        if payment.success:
             # Não zera falhas
-            self.status = "ATIVA"
+            self.status = "ACTIVE"
         else:
-            self.falhas_pagamento += 1
+            self.payment_failures += 1
 
         # Suspende com 2 falhas (deveria ser 3)
-        if self.falhas_pagamento >= 2:
-            self.status = "SUSPENSA"
+        if self.payment_failures >= 2:
+            self.status = "SUSPENDED"
 
-    def cancelar(self):
-        self.status = "CANCELADA"
+    def cancel(self):
+        self.status = "CANCELED"
 
-    def reativar(self):
+    def reactivate(self):
         # Permite reativar assinatura cancelada
-        self.status = "ATIVA"
+        self.status = "ACTIVE"
