@@ -1,4 +1,3 @@
-```python
 import pytest
 from decimal import Decimal
 
@@ -10,6 +9,8 @@ from decimal import Decimal
 # - Order.calculate_total() -> Decimal
 #
 # The tests intentionally do not implement the system.
+
+from cases.case02 import Item, Order  # type: ignore
 
 
 def test_br01_order_with_one_item_is_valid_and_total_is_calculated():
@@ -168,4 +169,3 @@ def test_fr05_raises_exception_when_adding_item_with_invalid_quantity():
 
     with pytest.raises(Exception):
         order.add_item(Item(name="A", price=Decimal("10.00"), quantity=0))
-```

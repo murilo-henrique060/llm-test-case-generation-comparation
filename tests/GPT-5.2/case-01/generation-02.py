@@ -1,11 +1,10 @@
-```python
 import pytest
 
 # NOTE:
 # These tests assume the SUT provides the classes `User` and `UserService`
 # with the exact public API described in the specification.
 # Adjust the import path below to match your project structure.
-from user_registration import UserService, User
+from cases.case01 import UserService, User
 
 
 def test_register_returns_user_instance_on_success():
@@ -113,4 +112,3 @@ def test_register_allows_registering_different_emails():
 
     assert user1 is not None
     assert user2 is not None
-```

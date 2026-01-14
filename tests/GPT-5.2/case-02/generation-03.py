@@ -1,4 +1,4 @@
-```python
+
 import pytest
 from decimal import Decimal
 
@@ -6,7 +6,7 @@ from decimal import Decimal
 # - Item(name: str, price: Decimal, quantity: int)
 # - Order.add_item(item: Item) -> None
 # - Order.calculate_total() -> Decimal
-from order_system import Item, Order  # type: ignore
+from cases.case02 import Item, Order  # type: ignore
 
 
 def test_br01_order_must_contain_at_least_one_item_raises_exception_on_calculate_total_with_no_items():
@@ -128,4 +128,3 @@ def test_fr05_raise_exception_in_case_of_failure_when_adding_item_with_negative_
     order = Order()
     with pytest.raises(Exception):
         order.add_item(Item(name="A", price=Decimal("-1.00"), quantity=1))
-```

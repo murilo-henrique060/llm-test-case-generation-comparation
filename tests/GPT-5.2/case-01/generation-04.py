@@ -1,4 +1,3 @@
-```python
 import pytest
 
 # NOTE:
@@ -7,7 +6,7 @@ import pytest
 # and a User object with public attributes: name, email.
 # Password is private in the UML (- password: str), so tests do not access it directly.
 
-from user_service import UserService  # type: ignore
+from cases.case01 import UserService  # type: ignore
 
 
 def test_register_returns_user_instance_when_all_fields_valid():
@@ -94,4 +93,3 @@ def test_register_prevents_duplicate_email_by_raising_exception():
 
     with pytest.raises(Exception):
         service.register(name="Eve", email="dup@example.com", password="secret2")
-```

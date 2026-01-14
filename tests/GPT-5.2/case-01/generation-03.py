@@ -1,10 +1,9 @@
-```python
 import pytest
 
 # NOTE:
 # These tests assume the SUT provides `UserService` (and returns a `User`) as specified.
 # Adjust the import path to match your project structure.
-from user_service import UserService  # type: ignore
+from cases.case01 import UserService  # type: ignore
 
 
 def test_register_allows_creating_user_with_name_email_password_returns_user():
@@ -99,4 +98,3 @@ def test_register_duplicate_email_raises_exception():
 
     with pytest.raises(Exception):
         service.register(name="Heidi", email="dup@example.com", password="secret")
-```

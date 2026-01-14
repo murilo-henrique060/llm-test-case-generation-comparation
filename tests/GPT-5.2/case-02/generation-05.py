@@ -1,9 +1,9 @@
-```python
+
 import pytest
 from decimal import Decimal
 
 # Tests assume Item and Order are provided by the system under test.
-from order_system import Item, Order
+from cases.case02 import Item, Order
 
 
 def test_br01_order_must_contain_at_least_one_item_raises_exception_when_empty():
@@ -131,4 +131,3 @@ def test_fr05_raise_exception_on_failure_when_adding_invalid_item_quantity():
     order = Order()
     with pytest.raises(Exception):
         order.add_item(Item(name="A", price=Decimal("10"), quantity=-1))
-```

@@ -1,4 +1,4 @@
-```python
+
 import pytest
 
 # NOTE:
@@ -8,7 +8,7 @@ import pytest
 #
 # The exact module path is intentionally not specified by the requirements.
 # Adjust the import below to match the system under test.
-from user_service import UserService  # noqa: F401
+from cases.case01 import UserService  # noqa: F401
 
 
 def test_fr01_allows_registering_a_user_returns_user_instance():
@@ -120,4 +120,3 @@ def test_fr04_failure_raises_exception_when_email_invalid():
 
     with pytest.raises(Exception):
         service.register(name="Frank", email="frankexample.com", password="secret1")
-```

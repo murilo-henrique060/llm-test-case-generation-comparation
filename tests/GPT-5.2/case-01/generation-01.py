@@ -1,10 +1,9 @@
-```python
 import pytest
 
 # NOTE:
 # These tests assume the existence of the following import path.
 # Adjust the import to match the actual project structure without changing test behaviors.
-from user_registration import UserService  # type: ignore
+from cases.case01 import UserService  # type: ignore
 
 
 def test_register_returns_user_on_valid_input():
@@ -102,4 +101,3 @@ def test_register_prevents_duplicate_email_by_raising_exception_on_second_regist
 
     with pytest.raises(Exception):
         service.register(name="Heidi", email="dup@example.com", password="secret2")
-```

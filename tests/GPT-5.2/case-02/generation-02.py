@@ -1,12 +1,10 @@
-```python
 import pytest
 from decimal import Decimal
 
 # NOTE:
 # These tests assume the SUT provides classes named Item and Order as specified.
 # They intentionally do not implement the system.
-from order_system import Item, Order  # type: ignore
-
+from cases.case02 import Item, Order  # type: ignore
 
 def test_br01_order_must_contain_at_least_one_item_raises_exception_when_no_items():
     # BR01 – An order must contain at least one item
@@ -144,4 +142,3 @@ def test_fr05_raise_exception_on_failure_invalid_item_quantity():
     order = Order()
     with pytest.raises(Exception):
         order.add_item(Item(name="A", price=Decimal("10.00"), quantity=-1))
-```
